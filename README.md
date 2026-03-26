@@ -17,7 +17,7 @@
 ### 从源码安装
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/LiangJiayi666/calcli.git
 cd calcli
 pip install -e .
 ```
