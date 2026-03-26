@@ -11,14 +11,13 @@
 - **颜色编码**: 6位唯一颜色编码标识任务
 - **数据持久化**: JSON格式存储，自动备份
 - **临时文件**: 查看结果自动保存到临时文件
-- **消逝时间**: 支持设置任务过期时间，过期后自动跳过
 
 ## 安装
 
 ### 从源码安装
 
 ```bash
-git clone https://github.com/LiangJiayi666/calcli.git
+git clone <repository-url>
 cd calcli
 pip install -e .
 ```
@@ -36,8 +35,7 @@ python -m calcli.calcli --help
 ```bash
 calcli create --name "任务名" --description "描述" \
   --begin "2026-03-18 09:00:00" --end "2026-03-18 10:00:00" \
-  --repeat weekly --x 1 \
-  --expiration "2121-02-01 21:21:00"
+  --repeat weekly --x 1
 ```
 
 参数说明:
@@ -47,12 +45,11 @@ calcli create --name "任务名" --description "描述" \
 - `--end`: 结束时间，格式: YYYY-MM-DD HH:MM:SS (必需)
 - `--repeat`: 重复类型: daily, weekly, monthly, yearly (默认: daily)
 - `--x`: 重复间隔值，正整数 (默认: 1)
-- `--expiration`: 消逝时间，格式: YYYY-MM-DD HH:MM:SS (默认: 2121-02-01 21:21:00)
 
 ### 更新任务
 
 ```bash
-calcli update A1B2C3 --name "新名称" --repeat monthly --x 2 --expiration "2026-12-31 23:59:59"
+calcli update A1B2C3 --name "新名称" --repeat monthly --x 2
 ```
 
 可以更新任意字段组合。
@@ -147,35 +144,6 @@ python -m pytest tests/
 - 遵循 PEP 8 规范
 - 使用类型注解
 - 中文错误提示
-
-## 消逝时间功能
-
-### 功能说明
-CalCLI v1.1+ 新增消逝时间功能，支持设置任务的过期时间。任务过期后将不再出现在日历视图中。
-
-### 一次性任务处理
-对于一次性任务，推荐以下配置：
-- **重复类型**: 设置为 `yearly`
-- **重复间隔**: 设置为 `21` (每21年一次)
-- **消逝时间**: 设置为任务的终止时间
-
-示例：
-```bash
-calcli create --name "一次性任务" --description "描述" \
-  --begin "2026-03-27 09:00:00" --end "2026-03-27 10:00:00" \
-  --repeat yearly --x 21 \
-  --expiration "2026-03-27 10:00:00"
-```
-
-### 数据迁移
-如果从旧版本升级，需要运行数据迁移脚本：
-```bash
-# 模拟运行（不修改数据）
-python migrate_expiration_time.py --dry-run
-
-# 实际执行迁移
-python migrate_expiration_time.py
-```
 
 ## 许可证
 

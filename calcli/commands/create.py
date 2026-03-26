@@ -51,6 +51,14 @@ def create_command(args: argparse.Namespace, storage: Storage, config: Config) -
             print("错误: 开始时间必须早于结束时间")
             return 1
 
+        # 解析消逝时间
+        try:
+            expiration_time = datetime.fromisoformat(args.expiration)
+        except ValueError as e:
+            print(f"错误: 消逝时间格式无效 - {str(e)}")
+            print("请使用格式: YYYY-MM-DD HH:MM:SS")
+            return 1
+
         # 生成唯一的颜色编码
         existing_ids = storage.get_task_ids()
         task_id = generate_color_code(existing_ids)
@@ -69,6 +77,7 @@ def create_command(args: argparse.Namespace, storage: Storage, config: Config) -
             recent_end=end_time,  # 创建时，首次=最近
             repeat_type=args.repeat,
             repeat_value=args.x,
+            expiration_time=expiration_time,
             created_at=current_time,
             updated_at=current_time,
         )
@@ -82,6 +91,7 @@ def create_command(args: argparse.Namespace, storage: Storage, config: Config) -
         print(f"任务名称: {args.name}")
         print(f"开始时间: {begin_time.strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"结束时间: {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"消逝时间: {expiration_time.strftime('%Y-%m-%d %H:%M:%S')}")
         print(
             f"重复类型: {args.repeat} (每{args.x}个{'天' if args.repeat == 'daily' else '周' if args.repeat == 'weekly' else '月' if args.repeat == 'monthly' else '年'})"
         )

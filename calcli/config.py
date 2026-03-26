@@ -27,6 +27,9 @@ class Config:
     # 查看命令的筛选选项
     VIEW_FILTERS = ["all", "todo", "todopending"]
 
+    # 默认消逝时间
+    DEFAULT_EXPIRATION_TIME = "2121-02-01T21:21:00"
+
     def __init__(self, data_dir: Optional[str] = None):
         """
         初始化配置

@@ -47,6 +47,11 @@ def main():
         help="重复类型",
     )
     create_parser.add_argument("--x", type=int, default=1, help="重复间隔值")
+    create_parser.add_argument(
+        "--expiration",
+        default="2121-02-01 21:21:00",
+        help="消逝时间 (YYYY-MM-DD HH:MM:SS)，默认：2121-02-01 21:21:00",
+    )
 
     # update 命令
     update_parser = subparsers.add_parser("update", help="更新任务")
@@ -59,6 +64,7 @@ def main():
         "--repeat", choices=["daily", "weekly", "monthly", "yearly"], help="新重复类型"
     )
     update_parser.add_argument("--x", type=int, help="新重复间隔值")
+    update_parser.add_argument("--expiration", help="新消逝时间 (YYYY-MM-DD HH:MM:SS)")
 
     # status 命令 (done/pending/todo)
     for status in ["done", "pending", "todo"]:

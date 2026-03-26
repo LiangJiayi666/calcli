@@ -26,6 +26,12 @@ def generate_task_occurrences(
     """
     occurrences = []
 
+    # 检查消逝时间：如果当前日期在消逝时间之后，完全跳过该任务
+    current_date = datetime.now().date()
+    expiration_date = task.expiration_time.date()
+    if current_date > expiration_date:
+        return occurrences  # 返回空列表，完全跳过
+
     # 获取任务的开始和结束时间（只取日期部分）
     task_start_date = task.first_start.date()
     task_end_date = task.first_end.date()

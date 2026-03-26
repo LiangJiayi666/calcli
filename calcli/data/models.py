@@ -22,6 +22,7 @@ class Task:
     recent_end: datetime  # 最近一次任务结束时间（含具体时间）
     repeat_type: str  # "daily", "weekly", "monthly", "yearly"
     repeat_value: int  # x值，正整数
+    expiration_time: datetime  # 消逝时间，默认2121-02-01 21:21:00
     created_at: datetime  # 创建时间
     updated_at: datetime  # 更新时间
 
@@ -37,6 +38,7 @@ class Task:
             "recent_end": self.recent_end.isoformat(),
             "repeat_type": self.repeat_type,
             "repeat_value": self.repeat_value,
+            "expiration_time": self.expiration_time.isoformat(),
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
         }
@@ -44,6 +46,14 @@ class Task:
     @classmethod
     def from_dict(cls, data: dict) -> "Task":
         """从字典创建Task实例"""
+        # 处理旧数据：如果没有expiration_time字段，使用默认值
+        if "expiration_time" not in data:
+            from ..config import Config
+
+            expiration_time = datetime.fromisoformat(Config.DEFAULT_EXPIRATION_TIME)
+        else:
+            expiration_time = datetime.fromisoformat(data["expiration_time"])
+
         return cls(
             id=data["id"],
             name=data["name"],
@@ -54,6 +64,7 @@ class Task:
             recent_end=datetime.fromisoformat(data["recent_end"]),
             repeat_type=data["repeat_type"],
             repeat_value=data["repeat_value"],
+            expiration_time=expiration_time,
             created_at=datetime.fromisoformat(data["created_at"]),
             updated_at=datetime.fromisoformat(data["updated_at"]),
         )

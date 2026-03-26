@@ -102,6 +102,17 @@ def update_command(args: argparse.Namespace, storage: Storage, config: Config) -
             task.repeat_value = args.x
             updated = True
 
+        # 更新消逝时间
+        if args.expiration is not None:
+            try:
+                expiration_time = datetime.fromisoformat(args.expiration)
+                task.expiration_time = expiration_time
+                updated = True
+            except ValueError as e:
+                print(f"错误: 消逝时间格式无效 - {str(e)}")
+                print("请使用格式: YYYY-MM-DD HH:MM:SS")
+                return 1
+
         # 如果没有提供任何更新参数
         if not updated:
             print("警告: 没有提供任何更新参数")
