@@ -56,7 +56,7 @@ test_*.py
 *.test.py
 
 # Claude configuration (local development)
-.claude/
+# .claude/  # 已移除，现在会上传到GitHub
 
 # Temporary files
 *.tmp
