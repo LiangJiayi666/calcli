@@ -23,7 +23,7 @@ def main():
   calcli create --name "任务名" --description "描述" --begin "2026-03-18 09:00:00" --end "2026-03-18 10:00:00" --repeat weekly --x 1
   calcli update A1B2C3 --name "新名称" --repeat monthly --x 2
   calcli done A1B2C3 --begin "2026-03-25" --end "2026-03-25"
-  calcli view "2026-03-25" "2026-03-30" --all
+  calcli view "2026-03-25" "2026-03-30" --filter all
         """,
     )
 

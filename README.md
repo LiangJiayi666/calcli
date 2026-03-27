@@ -69,13 +69,13 @@ calcli create --name "项目评审" --description "季度项目评审会议" \
 **手动命令：**
 ```bash
 # 查看指定日期范围的所有任务
-calcli view "2026-03-25" "2026-03-31" --all
+calcli view "2026-03-25" "2026-03-31" --filter all
 
 # 只查看待办任务
-calcli view "2026-03-25" "2026-03-31" --todo
+calcli view "2026-03-25" "2026-03-31" --filter todo
 
 # 查看待办和进行中任务
-calcli view "2026-03-25" "2026-03-31" --todopending
+calcli view "2026-03-25" "2026-03-31" --filter todopending
 ```
 
 ### 更新任务状态

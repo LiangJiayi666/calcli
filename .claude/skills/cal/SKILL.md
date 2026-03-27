@@ -80,13 +80,13 @@ calcli todo A1B2C3 --begin "2026-03-25" --end "2026-03-25"
 ### 查看任务
 ```bash
 # 查看所有任务
-calcli view "2026-03-25" "2026-03-30" --all
+calcli view "2026-03-25" "2026-03-30" --filter all
 
 # 只查看待办任务
-calcli view "2026-03-25" "2026-03-30" --todo
+calcli view "2026-03-25" "2026-03-30" --filter todo
 
 # 查看待办和进行中任务
-calcli view "2026-03-25" "2026-03-30" --todopending
+calcli view "2026-03-25" "2026-03-30" --filter todopending
 ```
 
 
