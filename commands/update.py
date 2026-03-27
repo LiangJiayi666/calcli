@@ -79,10 +79,21 @@ def update_command(args: argparse.Namespace, storage: Storage, config: Config) -
                 print("请使用格式: YYYY-MM-DD HH:MM:SS")
                 return 1
 
-        # 验证时间顺序（如果同时更新了开始和结束时间）
+        # 验证时间顺序
+        # 如果同时更新了开始和结束时间
         if args.begin is not None and args.end is not None:
             if task.first_start >= task.first_end:
                 print("错误: 开始时间必须早于结束时间")
+                return 1
+        # 如果只更新开始时间，检查是否比现有的结束时间晚
+        elif args.begin is not None:
+            if task.first_start >= task.first_end:
+                print("错误: 更新后的开始时间不能晚于或等于现有的结束时间")
+                return 1
+        # 如果只更新结束时间，检查是否比现有的开始时间早
+        elif args.end is not None:
+            if task.first_start >= task.first_end:
+                print("错误: 更新后的结束时间不能早于或等于现有的开始时间")
                 return 1
 
         # 更新重复类型
@@ -112,6 +123,14 @@ def update_command(args: argparse.Namespace, storage: Storage, config: Config) -
                 print(f"错误: 消逝时间格式无效 - {str(e)}")
                 print("请使用格式: YYYY-MM-DD HH:MM:SS")
                 return 1
+        # 如果更新了begin或end，且没有更新expiration，检查expiration是否比更新后的end更早
+        elif args.begin is not None or args.end is not None:
+            # 获取更新后的end时间（如果更新了end就用新的，否则用现有的）
+            current_end = task.first_end
+            # 如果expiration比更新后的end更早，则对齐到end
+            if task.expiration_time < current_end:
+                task.expiration_time = current_end
+                updated = True
 
         # 如果没有提供任何更新参数
         if not updated:
