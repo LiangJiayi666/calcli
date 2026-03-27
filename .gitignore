@@ -44,3 +44,76 @@ Thumbs.db
 view_*.txt
 check_course.py
 clean_tasks.py
+.log/
+.calcli.db
+.calcli.db-journal
+data/calcli.db
+data/calcli.db-journal
+
+# Development and testing files
+dev_*.py
+test_*.py
+*.test.py
+
+# Claude configuration (local development)
+.claude/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# System files
+*.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python virtual environment
+venv/
+env/
+.venv/
+.env/
+ENV/
+
+# Python package/build directories
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+log/
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Jupyter
+.ipynb_checkpoints
+
+# mypy
+.mypy_cache/
