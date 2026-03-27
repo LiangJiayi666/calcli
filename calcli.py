@@ -43,7 +43,7 @@ def main():
     create_parser.add_argument(
         "--repeat",
         choices=["daily", "weekly", "monthly", "yearly"],
-        default="daily",
+        default="yearly",
         help="重复类型",
     )
     create_parser.add_argument("--x", type=int, default=1, help="重复间隔值")
