@@ -78,9 +78,6 @@ def view_command(args: argparse.Namespace, storage: Storage, config: Config) -> 
         # 打印输出并保存到临时文件
         print_with_temp_file(output_text, config)
 
-        # 显示统计信息
-        _display_statistics(date_tasks, start_date, end_date, args.filter)
-
         return 0
 
     except Exception as e:
@@ -117,61 +114,6 @@ def _update_tasks_recent_dates(tasks: list, date_tasks: dict, storage: Storage) 
     # 保存更新后的任务
     for task in updated_tasks:
         storage.save_task(task)
-
-
-def _display_statistics(
-    date_tasks: dict, start_date: date, end_date: date, filter_type: str
-) -> None:
-    """
-    显示统计信息
-
-    Args:
-        date_tasks: 按日期分组的任务字典
-        start_date: 开始日期
-        end_date: 结束日期
-        filter_type: 筛选类型
-    """
-    # 计算统计信息
-    total_days = (end_date - start_date).days + 1
-    days_with_tasks = 0
-    total_tasks = 0
-    status_counts = {"done": 0, "pending": 0, "todo": 0}
-
-    for d, tasks in date_tasks.items():
-        # 根据筛选类型过滤任务
-        if filter_type == "todo":
-            filtered_tasks = [t for t in tasks if t["status"] == "todo"]
-        elif filter_type == "todopending":
-            filtered_tasks = [t for t in tasks if t["status"] in ["todo", "pending"]]
-        else:
-            filtered_tasks = tasks
-
-        if filtered_tasks:
-            days_with_tasks += 1
-            total_tasks += len(filtered_tasks)
-
-            for task_info in filtered_tasks:
-                status = task_info["status"]
-                if status in status_counts:
-                    status_counts[status] += 1
-
-    # 显示统计信息
-    print(f"\n统计信息:")
-    print(f"日期范围: {start_date} 至 {end_date} ({total_days} 天)")
-    print(f"有任务的日期: {days_with_tasks} 天")
-    print(f"总任务数: {total_tasks}")
-
-    if filter_type == "all":
-        print(f"任务状态分布:")
-        print(f"  已完成: {status_counts['done']}")
-        print(f"  进行中: {status_counts['pending']}")
-        print(f"  待办: {status_counts['todo']}")
-    elif filter_type == "todopending":
-        print(f"任务状态分布:")
-        print(f"  进行中: {status_counts['pending']}")
-        print(f"  待办: {status_counts['todo']}")
-    else:
-        print(f"筛选类型: {filter_type}")
 
 
 def validate_view_args(args: argparse.Namespace) -> bool:

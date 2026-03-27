@@ -1,17 +1,7 @@
 # CalCLI 项目规范
 
-## 命令行限制
-
-只能使用以下CalCLI命令，不得创建或使用其他命令：
-
-1. `calcli create` - 创建新任务
-2. `calcli update` - 更新任务属性
-3. `calcli done` - 标记任务为已完成
-4. `calcli pending` - 标记任务为进行中
-5. `calcli todo` - 标记任务为待办
-6. `calcli view` - 查看任务
-
 ## 声明与禁止
+- 运行命令前不需要使用`pwd`命令确认当前所在工作目录
 - 不得创建`delete`命令或其他新命令
 - 不得删改项目文件夹
 - 所有开发必须遵循CLAUDE.md中的规范

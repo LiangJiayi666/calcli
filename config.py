@@ -3,8 +3,9 @@
 """
 
 import os
+import sys
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict, Any
 
 
 class Config:
@@ -30,17 +31,104 @@ class Config:
     # 默认消逝时间
     DEFAULT_EXPIRATION_TIME = "2121-02-01T21:21:00"
 
-    def __init__(self, data_dir: Optional[str] = None):
+    # 环境配置
+    ENVIRONMENTS = {
+        "production": {
+            "name": "production",
+            "data_dir": os.path.expanduser("~/.calcli"),
+            "description": "生产环境",
+            "is_production": True,
+            "test_prefix": None,
+        },
+        "test": {
+            "name": "test",
+            "data_dir": os.path.expanduser("~/.calcli_test"),
+            "description": "测试环境",
+            "is_production": False,
+            "test_prefix": "[TEST]",
+        },
+        "development": {
+            "name": "development",
+            "data_dir": os.path.expanduser("~/.calcli_dev"),
+            "description": "开发环境",
+            "is_production": False,
+            "test_prefix": "[DEV]",
+        },
+    }
+
+    def __init__(self, env: Optional[str] = None, data_dir: Optional[str] = None):
         """
         初始化配置
 
         Args:
-            data_dir: 数据目录路径
+            env: 环境名称 (production/test/development)
+            data_dir: 数据目录路径 (覆盖环境配置)
         """
-        self.data_dir = Path(data_dir) if data_dir else Path(self.DEFAULT_DATA_DIR)
+        self.env_name = self._detect_environment(env)
+        self.env_config = self.ENVIRONMENTS[self.env_name]
+
+        # 如果指定了data_dir，则覆盖环境配置
+        if data_dir:
+            self.data_dir = Path(data_dir)
+            # 更新环境配置中的data_dir
+            self.env_config = self.env_config.copy()
+            self.env_config["data_dir"] = str(self.data_dir)
+        else:
+            self.data_dir = Path(self.env_config["data_dir"])
 
         # 确保目录存在
         self.data_dir.mkdir(parents=True, exist_ok=True)
+
+        # 初始化环境日志目录
+        self._init_environment_logs()
+
+    def _detect_environment(self, env: Optional[str] = None) -> str:
+        """
+        检测当前环境
+
+        优先级:
+        1. 显式传入的env参数
+        2. 命令行参数 --env
+        3. 环境变量 CALCLI_ENV
+        4. 默认生产环境
+
+        Args:
+            env: 环境名称
+
+        Returns:
+            环境名称
+        """
+        # 1. 显式参数
+        if env:
+            if env not in self.ENVIRONMENTS:
+                raise ValueError(
+                    f"未知环境: {env}，可用环境: {list(self.ENVIRONMENTS.keys())}"
+                )
+            return env
+
+        # 2. 命令行参数
+        if "--env" in sys.argv:
+            try:
+                env_index = sys.argv.index("--env")
+                if env_index + 1 < len(sys.argv):
+                    cmd_env = sys.argv[env_index + 1]
+                    if cmd_env in self.ENVIRONMENTS:
+                        return cmd_env
+            except (ValueError, IndexError):
+                pass
+
+        # 3. 环境变量
+        env_var = os.environ.get("CALCLI_ENV")
+        if env_var and env_var in self.ENVIRONMENTS:
+            return env_var
+
+        # 4. 默认生产环境
+        return "production"
+
+    def _init_environment_logs(self):
+        """初始化环境日志目录"""
+        logs_dir = self.data_dir / "logs"
+        logs_dir.mkdir(exist_ok=True)
 
     @property
     def tasks_file(self) -> Path:

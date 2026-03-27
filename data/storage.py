@@ -91,23 +91,7 @@ class Storage:
         # 保存到文件
         self._write_json(self.tasks_file, {"tasks": [t.to_dict() for t in tasks]})
 
-    def delete_task(self, task_id: str) -> bool:
-        """删除任务"""
-        tasks = self.get_all_tasks()
-        original_count = len(tasks)
 
-        # 过滤掉要删除的任务
-        tasks = [t for t in tasks if t.id != task_id]
-
-        if len(tasks) < original_count:
-            # 保存更新后的任务列表
-            self._write_json(self.tasks_file, {"tasks": [t.to_dict() for t in tasks]})
-
-            # 删除相关的时间戳
-            self.delete_timestamps_by_task(task_id)
-            return True
-
-        return False
 
     # 时间戳管理方法
     def get_all_timestamps(self) -> List[Timestamp]:
@@ -121,12 +105,6 @@ class Storage:
         all_timestamps = self.get_all_timestamps()
         return [ts for ts in all_timestamps if ts.task_id == task_id]
 
-    def get_timestamps_by_date_range(
-        self, start_date: date, end_date: date
-    ) -> List[Timestamp]:
-        """获取指定日期范围内的所有时间戳"""
-        all_timestamps = self.get_all_timestamps()
-        result = []
 
         for ts in all_timestamps:
             # 检查时间戳是否与日期范围有重叠
@@ -145,26 +123,9 @@ class Storage:
             self.timestamps_file, {"timestamps": [ts.to_dict() for ts in timestamps]}
         )
 
-    def delete_timestamps_by_task(self, task_id: str):
-        """删除指定任务的所有时间戳"""
-        timestamps = self.get_all_timestamps()
-        timestamps = [ts for ts in timestamps if ts.task_id != task_id]
-
-        self._write_json(
-            self.timestamps_file, {"timestamps": [ts.to_dict() for ts in timestamps]}
-        )
-
-    # 工具方法
-    def task_exists(self, task_id: str) -> bool:
-        """检查任务是否存在"""
-        return self.get_task(task_id) is not None
 
     def get_task_ids(self) -> List[str]:
         """获取所有任务ID"""
         tasks = self.get_all_tasks()
         return [task.id for task in tasks]
 
-    def clear_all_data(self):
-        """清空所有数据（用于测试）"""
-        self._write_json(self.tasks_file, {"tasks": []})
-        self._write_json(self.timestamps_file, {"timestamps": []})

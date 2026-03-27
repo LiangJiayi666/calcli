@@ -27,8 +27,8 @@ def format_task_display(task_info: Dict[str, Any]) -> str:
 
     status_str = status_display.get(status, f"[{status}]")
 
-    # 构建显示字符串
-    display = f"  {status_str} {task.name} {task.id} {task.description}"
+    # 构建显示字符串: [状态] 任务名称 (ID: 任务ID) - 任务描述
+    display = f"{status_str} {task.name} (ID: {task.id}) - {task.description}"
 
     return display
 
@@ -45,9 +45,11 @@ def format_date_header(d: date, task_count: int) -> str:
         格式化后的日期标题
     """
     weekday = get_weekday_name_chinese(d)
-    date_str = d.strftime("%Y-%m-%d")
+    month = d.month
+    day = d.day
 
-    return f"{date_str} ({weekday}) - {task_count} 个任务"
+    # 格式: 月日（星期）
+    return f"{month}月{day}日（{weekday}）："
 
 
 def generate_view_output(
@@ -70,11 +72,6 @@ def generate_view_output(
     """
     output_lines = []
 
-    # 添加标题分隔线
-    separator = "=" * 80
-    output_lines.append(separator)
-    output_lines.append("")
-
     # 处理每个日期
     current_date = start_date
     while current_date <= end_date:
@@ -91,20 +88,15 @@ def generate_view_output(
             # 添加日期标题
             date_header = format_date_header(current_date, len(tasks))
             output_lines.append(date_header)
-            output_lines.append("-" * 40)
 
             # 添加任务列表
-            for i, task_info in enumerate(tasks, 1):
+            for task_info in tasks:
                 task_display = format_task_display(task_info)
-                output_lines.append(f"  {i}. {task_display}")
-                output_lines.append("")
+                output_lines.append(f"  - {task_display}")
 
             output_lines.append("")
 
         current_date = _add_days(current_date, 1)
-
-    # 添加结束分隔线
-    output_lines.append(separator)
 
     return "\n".join(output_lines)
 
