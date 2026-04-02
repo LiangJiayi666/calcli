@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python calcli.py view \"2026-03-23\" \"2026-03-29\" --filter todopending)",
+      "Bash(python calcli.py create --name \"买录音笔\" --description \"4月内完成\" --begin \"2026-04-01 00:00:00\" --end \"2026-04-30 23:59:59\" --expiration \"2026-04-30 23:59:59\")",
+      "Bash(python calcli.py create --name \"买手机\" --description \"4月内完成\" --begin \"2026-04-01 00:00:00\" --end \"2026-04-30 23:59:59\" --expiration \"2026-04-30 23:59:59\")",
+      "Bash(python calcli.py create --name \"考驾照\" --description \"4月内完成\" --begin \"2026-04-01 00:00:00\" --end \"2026-04-30 23:59:59\" --expiration \"2026-04-30 23:59:59\")"
+    ]
+  }
+}

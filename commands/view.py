@@ -7,11 +7,11 @@ import argparse
 from datetime import date
 from typing import Any
 
-from ..data.storage import Storage
-from ..config import Config
-from ..core.date_utils import parse_date
-from ..core.task_logic import get_tasks_for_date_range, update_recent_dates
-from ..utils.output import generate_view_output, print_with_temp_file
+from data.storage import Storage
+from config import Config
+from core.date_utils import parse_date
+from core.task_logic import get_tasks_for_date_range, update_recent_dates
+from utils.output import generate_view_output, print_with_temp_file
 
 
 def view_command(args: argparse.Namespace, storage: Storage, config: Config) -> int:

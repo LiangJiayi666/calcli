@@ -6,7 +6,7 @@ from datetime import date, datetime
 from typing import List, Dict, Any, Optional
 from pathlib import Path
 
-from ..core.date_utils import get_weekday_name_chinese
+from core.date_utils import get_weekday_name_chinese
 
 
 def format_task_display(task_info: Dict[str, Any]) -> str:

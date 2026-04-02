@@ -7,10 +7,10 @@ import argparse
 from datetime import datetime
 from typing import Any
 
-from ..data.models import Task
-from ..data.storage import Storage
-from ..config import Config
-from ..utils.color_code import generate_color_code
+from data.models import Task
+from data.storage import Storage
+from config import Config
+from utils.color_code import generate_color_code
 
 
 def create_command(args: argparse.Namespace, storage: Storage, config: Config) -> int:

@@ -8,9 +8,9 @@ import sys
 import argparse
 from datetime import datetime
 
-from .config import Config
-from .data.storage import Storage
-from .utils.color_code import ColorCodeGenerator
+from config import Config
+from data.storage import Storage
+from utils.color_code import ColorCodeGenerator
 
 
 def main():
@@ -86,6 +86,9 @@ def main():
         help="筛选显示的任务",
     )
 
+    # list 命令
+    list_parser = subparsers.add_parser("list", help="列出所有未到达消逝时间的任务")
+
     # 解析参数
     args = parser.parse_args()
 
@@ -101,24 +104,29 @@ def main():
 
         # 根据命令执行相应操作
         if args.command == "create":
-            from .commands.create import create_command
+            from commands.create import create_command
 
             return create_command(args, storage, config)
 
         elif args.command == "update":
-            from .commands.update import update_command
+            from commands.update import update_command
 
             return update_command(args, storage, config)
 
         elif args.command in ["done", "pending", "todo"]:
-            from .commands.status import status_command
+            from commands.status import status_command
 
             return status_command(args, storage, config)
 
         elif args.command == "view":
-            from .commands.view import view_command
+            from commands.view import view_command
 
             return view_command(args, storage, config)
+
+        elif args.command == "list":
+            from commands.list import list_command
+
+            return list_command(args, storage, config)
 
         else:
             print(f"错误: 未知命令 '{args.command}'")

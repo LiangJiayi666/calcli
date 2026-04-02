@@ -48,7 +48,7 @@ class Task:
         """从字典创建Task实例"""
         # 处理旧数据：如果没有expiration_time字段，使用默认值
         if "expiration_time" not in data:
-            from ..config import Config
+            from config import Config
 
             expiration_time = datetime.fromisoformat(Config.DEFAULT_EXPIRATION_TIME)
         else:

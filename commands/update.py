@@ -7,9 +7,9 @@ import argparse
 from datetime import datetime
 from typing import Any
 
-from ..data.models import Task
-from ..data.storage import Storage
-from ..config import Config
+from data.models import Task
+from data.storage import Storage
+from config import Config
 
 
 def update_command(args: argparse.Namespace, storage: Storage, config: Config) -> int:
@@ -32,7 +32,7 @@ def update_command(args: argparse.Namespace, storage: Storage, config: Config) -
             return 1
 
         # 验证颜色编码格式
-        from ..utils.color_code import validate_color_code
+        from utils.color_code import validate_color_code
 
         if not validate_color_code(args.task_id):
             print(f"错误: 任务ID '{args.task_id}' 格式无效")

@@ -6,7 +6,7 @@ from datetime import datetime, date, timedelta
 from typing import List, Tuple, Dict, Any
 import calendar
 
-from ..data.models import Task
+from data.models import Task
 from .date_utils import add_days, add_weeks, add_months, add_years
 
 
@@ -180,7 +180,7 @@ def get_tasks_for_date_range(
     Returns:
         按日期分组的任务字典
     """
-    from ..commands.status import get_task_status
+    from commands.status import get_task_status
 
     date_tasks = {}
 
